@@ -1,82 +1,47 @@
-class User {
-    constructor (name, lastName) {
-        this.ID = User.userID;
-        this.name = name; //string
-        this.lastName = lastName; //string
-        this.books = []; //array recibe books as objects
-        this.pets = []; //array recibe pets as strings
-        User.userID++
-    }
 
-    static userID = 1;
+// Componentes
+const Contenedor = require(`./constructor`)
 
-    getFullName () {
-        return `Usuario: ${this.name} ${this.lastName}`
-    }
 
-    addPet (pet){
-        this.pets.push(pet)
-        console.log(`Se agrego correctamente la mascota ${pet} al usuario ${this.ID}`)
-    }
+// Instanciacion 1
+let init1 = async () => {
+    let producto = new Contenedor("./persistent/productos.json");
+    
+    await producto.read()
+    
+    await producto.save({title: 'Escuadra',                                                                                                                                 
+    price: 123.45,                                                                                                                                     
+    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png',                                     
+    })
+    
+    await producto.save({title: 'Calculadora',                                                                                                                              
+    price: 234.56,                                                                                                                                     
+    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png',                                          
+    })
+    
+    await producto.save({title: 'Globo Terráqueo',                                                                                                                          
+    price: 345.67,                                                                                                                                     
+    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png',                                                               
+    })
 
-    countPets(){
-        return `El usuario ${this.ID} tiene ${this.pets.length} mascotas`
-    }
+    await producto.getById(12)
 
-    addBook (name, author){
-        let book = {name: name, author: author}
-        this.books.push(book)
-        console.log(`Se agrego correctamente el libro ${book.name} del autor ${book.author} al usuario ${this.ID}`)
-    }
+    await producto.getAll()
 
-    getBooksNames(){
-        return this.books.map(e=>e.name)
-    }
-
+    await producto.deleteById(2)
 }
 
 
-// Inicializamos una instancia de User
-const user1 = new User ("Roberto", "Argumedo")
-// Inicializamos una instancia de User
-const user2 = new User ("Barbara", "Garcia")
-// Inicializamos una instancia de User
-const user3 = new User ("Darth", "Vader")
 
-// Test getFullName
-console.log(user1.getFullName())
-console.log(user2.getFullName())
-console.log(user3.getFullName())
+// Instanciacion 1
+let init2 = async () => {
+    let cajones = new Contenedor("./persistent/cajones.json");
+    
+    await cajones.read()
+    
+    await cajones.deleteAll()
+}
 
-// Test agregar mascotas
-user1.addPet("Juno")
-user1.addPet("Houston")
-user2.addPet("Kion")
-user3.addPet("C3P0")
-user3.addPet("R2D2")
-user3.addPet("Jar Jar Binks")
 
-// Test cantidad de mascotas
-console.log(user1.countPets())
-console.log(user2.countPets())
-console.log(user3.countPets())
-
-// Test agregar libros
-user1.addBook("Fundación", "Isaac Asimov")
-user1.addBook("The Hobbit", "J.R.R. Tolkien")
-user1.addBook("Silmarillion", "J.R.R. Tolkien")
-user1.addBook("Crónicas Marcianas", "Ray Bradbury")
-user2.addBook("Tabú", "El Gato y la Caja")
-user2.addBook("El Prisioner de Azkhaban", "J.K. Rowling")
-user3.addBook("Democracia Intergalactica", "Palpatine")
-user3.addBook("Como matar un Jedi", "Autobiografía")
-
-// Test getBooksNames
-console.log(user1.getBooksNames())
-console.log(user2.getBooksNames())
-console.log(user3.getBooksNames())
-
-// Probamos las instancias
-console.log(user1)
-console.log(user2)
-console.log(user3)
+init1()
+init2()
