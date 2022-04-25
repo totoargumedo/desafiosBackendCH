@@ -1,47 +1,38 @@
+// Librerias
+const express = require(`express`)
 
 // Componentes
-const Contenedor = require(`./constructor`)
+const Container = require(`./container`)
 
+// APP para usar express
+const app = express()
 
-// Instanciacion 1
-let init1 = async () => {
-    let producto = new Contenedor("./persistent/productos.json");
-    
-    await producto.read()
-    
-    await producto.save({title: 'Escuadra',                                                                                                                                 
-    price: 123.45,                                                                                                                                     
-    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png',                                     
-    })
-    
-    await producto.save({title: 'Calculadora',                                                                                                                              
-    price: 234.56,                                                                                                                                     
-    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png',                                          
-    })
-    
-    await producto.save({title: 'Globo Terráqueo',                                                                                                                          
-    price: 345.67,                                                                                                                                     
-    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png',                                                               
-    })
+// PUERTO
+const PORT = 8080
 
-    await producto.getById(12)
+// SERVER INIT
+const server = app.listen(PORT, ()=>{
+    console.log(`Servidor http escuchando en puerto: ${server.address().port}`)
+})
 
-    await producto.getAll()
+server.on(`error`, error=>console.log(`Error en server: ${error}`))
 
-    await producto.deleteById(2)
-}
+// REQUESTS
+// GET
 
+app.get(`/`,(req,res)=>{
+    res.send(`<h1 style="color:red">Desafio 3 NODE CH</h1>`)
+})
 
+const productos = new Container("./persistent/productos.json")
+productos.read()//INICIAMOS EL ARCHIVO PERSISTENTE
 
-// Instanciacion 1
-let init2 = async () => {
-    let cajones = new Contenedor("./persistent/cajones.json");
-    
-    await cajones.read()
-    
-    await cajones.deleteAll()
-}
+app.get(`/productos`,(req,res)=>{
+    res.json(productos.getAll())
+    console.log(`Solicitud GET de productos`)
+})
 
-
-init1()
-init2()
+app.get(`/productoRandom`,(req,res)=>{
+    res.json(productos.getRandom())
+    console.log(`Solicitud GET de producto Random`)
+})

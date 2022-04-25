@@ -3,7 +3,7 @@ const fs = require(`fs`)
 
 
 // Clase constructor
-class Contenedor{
+class Container{
     constructor (fileRoute){
         this.fileRoute=fileRoute;
         this.fileContent= [];
@@ -72,8 +72,13 @@ class Contenedor{
         console.log(`Elemento encontrado ${objectById}`)
     }
 
+    getRandom(){
+        const randomElement = Math.floor(Math.random()*(this.fileContent.length))
+        return this.fileContent[randomElement]
+    }
+
     getAll(){
-        return console.log(this.fileContent)
+        return this.fileContent
     }
 
     async deleteById(id) {
@@ -93,4 +98,4 @@ class Contenedor{
     }
 }
 
-module.exports = Contenedor;
+module.exports = Container;

@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/totoargumedo/desafiosBackendCH/issues"
   },
-  "homepage": "https://github.com/totoargumedo/desafiosBackendCH#readme"
+  "homepage": "https://github.com/totoargumedo/desafiosBackendCH#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }
