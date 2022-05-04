@@ -19,28 +19,7 @@ class Container{
             }
             console.log(`${this.fileRoute} se cargo correctamente`)
         } catch(err){
-            const initialContent = [                                                                                                                                                     
-                {                                                                                                                                                    
-                  title: 'Escuadra',                                                                                                                                 
-                  price: 123.45,                                                                                                                                     
-                  thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png',                                     
-                  id: 1                                                                                                                                              
-                },                                                                                                                                                   
-                {                                                                                                                                                    
-                  title: 'Calculadora',                                                                                                                              
-                  price: 234.56,                                                                                                                                     
-                  thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png',                                          
-                  id: 2                                                                                                                                              
-                },                                                                                                                                                   
-                {                                                                                                                                                    
-                  title: 'Globo Terráqueo',                                                                                                                          
-                  price: 345.67,                                                                                                                                     
-                  thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png',                                   
-                  id: 3                                                                                                                                              
-                }                                                                                                                                                    
-              ]  
-            
-            await this.write(initialContent)
+            await this.write([])
             console.log(`Hubo un error al cargar ${this.fileRoute}: ${err}`)
             throw new Error(`Hubo un error al cargar ${this.fileRoute}: ${err}`)
         }
@@ -61,15 +40,28 @@ class Container{
         const newObject = {...object, id:this.id}
         this.fileContent.push(newObject)
         await this.write(this.fileContent)
-        console.log(`Se ingreso ${JSON.stringify(newObject)} correctamente al archivo`)
+        return newObject
+    }
+
+    async modify (id, object){
+        const objectIndex = this.fileContent.indexOf(this.fileContent.find(e=>e.id==id))
+        const oldObject = this.fileContent[objectIndex]
+        console.log(JSON.stringify(object))
+        const newObject = object
+        this.fileContent[objectIndex] = newObject
+        // this.fileContent[objectIndex].title = newObject.title
+        // this.fileContent[objectIndex].price = newObject.price
+        // this.fileContent[objectIndex].thumbnail = newObject.thumbnail
+        await this.write(this.fileContent)
+        return oldObject,newObject
     }
 
     getById (id) {
         const objectById = this.fileContent.find(e => e.id == id)
         if (objectById === undefined){
-            return null
+            return {error: `Elemento no encontrado`}
         }
-        console.log(`Elemento encontrado ${objectById}`)
+        return objectById
     }
 
     getRandom(){
@@ -85,15 +77,16 @@ class Container{
         const objectIndex = this.fileContent.indexOf(this.fileContent.find(e=>e.id == id))
         console.log(objectIndex)
         if (objectIndex != -1){
+            const deletedObject = JSON.stringify(this.fileContent[objectIndex])
             this.fileContent.splice(objectIndex, 1)
             await this.write(this.fileContent) 
-            return console.log(`Elemento eliminado correctamente`)
+            return deletedObject
         }
-        throw new Error (`Elemento no encontrado`)
+        return {error: `Elemento no encontrado`}
     }
     
     async deleteAll(){
-        await this.write("[]")
+        await this.write([])
         console.log(`Archivo limpiado correctamente`)
     }
 }
