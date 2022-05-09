@@ -5,9 +5,10 @@ const fs = require(`fs`)
 // Clase constructor
 class Container{
     constructor (fileRoute){
-        this.fileRoute=fileRoute;
+        this.fileRoute= fileRoute;
         this.fileContent= [];
         this.id=0;
+        this.read()
     }
 
     async read (){
@@ -46,12 +47,11 @@ class Container{
     async modify (id, object){
         const objectIndex = this.fileContent.indexOf(this.fileContent.find(e=>e.id==id))
         const oldObject = this.fileContent[objectIndex]
-        console.log(JSON.stringify(object))
+        if (oldObject === undefined){
+            return {error: `Elemento no encontrado`}
+        }
         const newObject = object
         this.fileContent[objectIndex] = newObject
-        // this.fileContent[objectIndex].title = newObject.title
-        // this.fileContent[objectIndex].price = newObject.price
-        // this.fileContent[objectIndex].thumbnail = newObject.thumbnail
         await this.write(this.fileContent)
         return oldObject,newObject
     }
