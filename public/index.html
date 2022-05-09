@@ -16,6 +16,18 @@
         Imagen: <input type="text" name="thumbnail">
         <button>Enviar</button>
     </form>
+
+    <h2>Cargar Imagen de Producto</h2>
+    <form action="/api/files/uploadSingle" enctype="multipart/form-data" method="POST">
+        Seleccionar Imagen: <input type="file" name="myFile">
+        <button>Subir</button>
+    </form>
+
+    <h2>Cargar Imagenes de Productos</h2>
+    <form action="/api/files/uploadMultiple" method="POST">
+        Seleccionar Imagenes: <input type="file" name="myFiles" multiple>
+        <button>Subir</button>
+    </form>
     
 </body>
 </html>

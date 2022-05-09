@@ -35,13 +35,23 @@ routerProductos.use(express.json())
     
     routerProductos.post(`/`,(req,res)=>{
         console.log(`Solicitud POST para agregar producto a ${productos.fileRoute}`)
-        res.json(productos.save(req.body))
+        try{
+            const newObject = productos.save(req.body)
+            res.json(newObject)
+        } catch (err){
+            res.json({error: err})
+        }
     })
     
     // PUT
     routerProductos.put(`/:id`,(req,res)=>{
         console.log(`Solicitud PUT para modificar producto con id: ${req.params.id}`)
-        res.json(productos.modify(req.params.id, req.body))
+        try{
+            const modifiedObject = productos.modify(req.params.id, req.body)
+            res.json(modifiedObject)
+        } catch (err){
+            res.json({error: err})
+        }
     })
     
     // DELETE

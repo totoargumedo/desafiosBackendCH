@@ -36,15 +36,15 @@ class Container{
         }
     }
 
-    async save (object) {
+    save (object) {
         this.id++
         const newObject = {...object, id:this.id}
         this.fileContent.push(newObject)
-        await this.write(this.fileContent)
+        this.write(this.fileContent)
         return newObject
     }
 
-    async modify (id, object){
+    modify (id, object){
         const objectIndex = this.fileContent.indexOf(this.fileContent.find(e=>e.id==id))
         const oldObject = this.fileContent[objectIndex]
         if (oldObject === undefined){
@@ -52,7 +52,7 @@ class Container{
         }
         const newObject = object
         this.fileContent[objectIndex] = newObject
-        await this.write(this.fileContent)
+        this.write(this.fileContent)
         return oldObject,newObject
     }
 
