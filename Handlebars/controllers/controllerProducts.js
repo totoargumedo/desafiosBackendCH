@@ -18,12 +18,14 @@ routerProductos.use(express.json())
 
     routerProductos.get(`/`,(req,res)=>{
         console.log(`Solicitud GET de productos.json`)
-        res.json(productos.getAll())
+        const showProducts = productos.getAll()
+        res.render(`productos`, {showProducts: showProducts})
     })
     
     routerProductos.get(`/:id`,(req,res)=>{
         console.log(`Solicitud GET de producto por ID`)
-        res.json(productos.getById(req.params.id))
+        const showProducts = productos.getById(req.params.id)
+        res.render(`productos`, {showProducts: showProducts})
     })
     
     routerProductos.get(`/random`,(req,res)=>{
@@ -38,8 +40,10 @@ routerProductos.use(express.json())
         try{
             const newObject = productos.save(req.body)
             res.json(newObject)
+            res.redirect('/')
         } catch (err){
             res.json({error: err})
+            res.redirect('/')
         }
     })
     

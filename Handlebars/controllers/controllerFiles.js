@@ -20,6 +20,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage})
 // REQUEST
+
+    // GET
+
+    routerFiles.get(`/`, (req,res)=>{
+        res.render(`archivos`)
+    })
+
     // POST
 
     routerFiles.post(`/uploadSingle`, upload.single(`myFile`), (req, res, next)=>{
@@ -30,6 +37,7 @@ const upload = multer({storage: storage})
             return next(error)
         }
         res.send(file)
+        res.redirect('/')
     })
 
     routerFiles.post(`/uploadMultiple`, upload.array(`myFiles`,12), (req, res,next)=>{
@@ -40,6 +48,7 @@ const upload = multer({storage: storage})
             return next(error)
         }
         res.send(files)
+        res.redirect('/')
     })
 
 module.exports = routerFiles
