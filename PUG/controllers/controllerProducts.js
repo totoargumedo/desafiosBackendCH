@@ -39,8 +39,10 @@ routerProductos.use(express.json())
         console.log(`Solicitud POST para agregar producto a ${productos.fileRoute}`)
         try{
             const newObject = productos.save(req.body)
+            res.json(newObject)
             res.redirect('/')
         } catch (err){
+            res.json({error: err})
             res.redirect('/')
         }
     })

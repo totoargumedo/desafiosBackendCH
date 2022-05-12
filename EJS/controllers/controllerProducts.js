@@ -25,6 +25,7 @@ routerProductos.use(express.json())
     routerProductos.get(`/:id`,(req,res)=>{
         console.log(`Solicitud GET de producto por ID`)
         const showProducts = productos.getById(req.params.id)
+        console.log(showProducts)
         res.render(`productos`, {showProducts: showProducts})
     })
     
