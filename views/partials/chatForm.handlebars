@@ -1,0 +1,28 @@
+<div class="container-md gap-3">
+  <h2>Chat interno</h2>
+  {{! se quita el action al formulario para ejecutar desde el cliente la carga action="/api/productos" method="POST" }}
+  <form class="row g-3" id="formChat">
+    <div class="col-md-4">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Nombre"
+        name="name"
+        required
+      />
+    </div>
+    <div class="col-md-4">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Cuentanos algo....."
+        name="message"
+        id="chatMessage"
+        required
+      />
+    </div>
+    <div class="col-12">
+      <button class="btn btn-primary">Enviar</button>
+    </div>
+  </form>
+</div>

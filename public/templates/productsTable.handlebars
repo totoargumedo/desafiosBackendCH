@@ -1,0 +1,22 @@
+<h2>Productos cargados</h2>
+<table class="table table-hover">
+  <thead>
+    <tr class="table-dark">
+      <th scope="col">ID</th>
+      <th scope="col">Producto</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Imagen</th>
+    </tr>
+  </thead>
+  <tbody class="table-success table-striped">
+    {{#each showProducts}}
+      <tr>
+        <th scope="row">{{id}}</th>
+        <td>{{title}}</td>
+        <td>{{price}}</td>
+        <td><img style="height: 50px" src="{{thumbnail}}" alt="{{title}}" />
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
