@@ -12,7 +12,7 @@ const { Server: IOServer } = require(`socket.io`);
 const app = express();
 
 // Inicializar Routers
-const { routerProductos } = require(`./controllers/controllerProducts`);
+const routerProductos = require(`./controllers/controllerProducts`);
 
 app.use(`/api/productos`, routerProductos);
 
@@ -61,24 +61,27 @@ app.get(`/`, (req, res) => {
 // socket
 const io = new IOServer(server);
 
-const messages = [];
+const ClienteSQL = require(`./models/containerSqlite`);
+const Container = require(`./models/container`);
+const connectConfig = require(`./db/config/conections`);
+const messagesApi = new ClienteSQL(connectConfig.sqlite3, `mensajes`);
+const productos = new Container(connectConfig.mariaDB, `articulos`);
 
-const { productos } = require(`./controllers/controllerProducts`);
-
-io.on(`connection`, (socket) => {
+io.on(`connection`, async (socket) => {
   console.log(`Socket client connected`);
 
-  socket.emit(`products`, productos.getAll());
+  socket.emit(`products`, await productos.getAll());
 
-  socket.emit(`messages`, messages);
+  socket.emit(`messages`, await messagesApi.listContent());
 
-  socket.on(`update`, (data) => {
+  socket.on(`update`, async (data) => {
     console.log(data);
-    io.sockets.emit(`products`, productos.getAll());
+    io.sockets.emit(`products`, await productos.getAll());
   });
 
-  socket.on(`new-message`, (data) => {
-    messages.push(data);
-    io.sockets.emit(`messages`, messages);
+  socket.on(`new-message`, async (data) => {
+    await messagesApi.insertIntoTable(data);
+
+    io.sockets.emit(`messages`, await messagesApi.listContent());
   });
 });
