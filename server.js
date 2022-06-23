@@ -21,6 +21,6 @@ server.on("error", (error) => {
 app.use(
   `/api/productos`,
   new productsRouter(
-    "mongodb+srv://admin:mongo2487!@cluster0.i3ttwmp.mongodb.net/?retryWrites=true&w=majority"
+    "ACA VA LA URL DEL DBATLAS" //reemplazar con la URL a la DB
   )
 );
