@@ -4,16 +4,17 @@ import ApiProductsMock from "../api/productos.js";
 import Products from "../contenedor/products.js";
 
 class productsRouter extends express.Router {
-  constructor(dbUrl) {
+  constructor() {
     super();
 
-    const productos = new Products(dbUrl);
+    const productos = new Products();
     const productosMock = new ApiProductsMock();
 
     // admin options
 
     let administrador = true;
 
+    this.use(express.urlencoded({ extended: true }));
     this.use(express.json());
     // requests
 
@@ -42,7 +43,7 @@ class productsRouter extends express.Router {
 
     // agregar productos
     this.post(`/`, (req, res) => {
-      if (administrador) {
+      if (administrador === true) {
         productos
           .saveProduct(req.body)
           .then((newProduct) => {

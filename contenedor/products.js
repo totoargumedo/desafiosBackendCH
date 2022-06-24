@@ -4,8 +4,8 @@ import * as productsModel from "../models/products.js";
 
 // clase productos
 class Products {
-  constructor(dbUrl) {
-    this.URL = dbUrl;
+  constructor() {
+    this.URL = "AQUI VA EL URL AL MONGO ATLAS"; //reemplazar con la URL a la DB
     this.collection = productsModel;
     this.connect();
   }
@@ -28,8 +28,9 @@ class Products {
   }
 
   async saveProduct(product) {
+    console.log(product);
     try {
-      const newProduct = await this.collection.productos.create({
+      const newProduct = await this.collection.products.create({
         ...product,
         timestamp: Date.now(),
       });
@@ -41,11 +42,11 @@ class Products {
 
   async modify(id, product) {
     try {
-      const productFind = await this.collection.productos.findByIdAndUpdate(
+      const productFind = await this.collection.products.findByIdAndUpdate(
         { _id: id },
         product
       );
-      if (!productFind) {
+      if (productFind) {
         return productFind;
       } else {
         throw new Error(`No existe el elemento con id: ${id}`);
@@ -57,11 +58,11 @@ class Products {
 
   async modifyStock(id, stock) {
     try {
-      const productFind = await this.collection.productos.findByIdAndUpdate(
+      const productFind = await this.collection.products.findByIdAndUpdate(
         { _id: id },
         { $set: { stock: stock } }
       );
-      if (!productFind) {
+      if (productFind) {
         return productFind;
       } else {
         throw new Error(`No existe el elemento con id: ${id}`);
@@ -73,12 +74,8 @@ class Products {
 
   async getAll() {
     try {
-      const productsFind = await this.collection.productos.find({});
-      if (!productsFind) {
-        return productFind;
-      } else {
-        throw new Error(`No existen elementos`);
-      }
+      const productsFind = await this.collection.products.find({});
+      return productsFind;
     } catch (error) {
       throw new Error(`Error al buscar los documentos: ${error}`);
     }
@@ -86,8 +83,8 @@ class Products {
 
   async getById(id) {
     try {
-      const productFind = await this.collection.productos.find({ _id: id });
-      if (!productFind) {
+      const productFind = await this.collection.products.find({ _id: id });
+      if (productFind) {
         return productFind;
       } else {
         throw new Error(`No existe el elemento con id: ${id}`);
@@ -99,10 +96,10 @@ class Products {
 
   async deleteById(id) {
     try {
-      const productFind = await this.collection.productos.findByIdAndDelete({
+      const productFind = await this.collection.products.findByIdAndDelete({
         _id: id,
       });
-      if (!productFind) {
+      if (productFind) {
         return productFind;
       } else {
         throw new Error(`No existe el elemento con id: ${id}`);
@@ -114,8 +111,8 @@ class Products {
 
   async deleteAll() {
     try {
-      const productsErase = await this.collection.productos.deleteMany({});
-      if (!productsFind) {
+      const productsErase = await this.collection.products.deleteMany({});
+      if (productsFind) {
         return productsErase;
       } else {
         throw new Error(`No existen elementos`);
