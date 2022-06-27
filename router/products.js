@@ -129,7 +129,7 @@ class productsRouter extends express.Router {
     });
 
     // mostrar productos fakeApi
-    this.post(`/test`, async (req, res, next) => {
+    this.post(`/test`, async (req, res) => {
       if (administrador) {
         try {
           if (!req.query.quantity) {
@@ -138,12 +138,10 @@ class productsRouter extends express.Router {
           const productsTest = await productosMock.populate(
             Number(req.query.quantity)
           );
-          res.status(200).json({
-            test: "ok",
-            products: productsTest,
-          });
+          console.log(productsTest);
+          res.status(200).json(productsTest);
         } catch (error) {
-          next(error);
+          throw new Error({ error: err });
         }
       } else {
         res.status(401).json({

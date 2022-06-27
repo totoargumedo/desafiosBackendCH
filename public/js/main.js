@@ -1,115 +1,54 @@
-const socket = io.connect();
+import { menusHTML } from "./componentes/menu.js";
+import { productsHTML } from "./componentes/productos.js";
+import { messagesHTML } from "./componentes/mensajes.js";
+import { testHTML } from "./componentes/test.js";
+import { loginHTML } from "./componentes/login.js";
 
-// sockets
+// login!
+document.getElementById("primaryContainer").innerHTML = loginHTML();
 
-socket.on(`messages`, function () {
-  renderTableChat();
+const loginButton = document.getElementById("loginButton");
+
+loginButton.addEventListener("click", (e) => {
+  document.getElementById("loginScreen").remove();
+  document.getElementById("primaryContainer").innerHTML = menusHTML();
+
+  // products layout
+  const buttonProducts = document.getElementById("buttonProducts");
+  buttonProducts.addEventListener("click", (e) => {
+    const addScript = document.createElement("script");
+    addScript.setAttribute("type", "module");
+    addScript.setAttribute("src", "./js/products.js");
+    document.querySelector("body").append(addScript);
+    document.getElementById("contentContainer").innerHTML = productsHTML();
+  });
+
+  // messages layout
+  const buttonMessages = document.getElementById("buttonMessages");
+  buttonMessages.addEventListener("click", (e) => {
+    const addScript = document.createElement("script");
+    addScript.setAttribute("type", "module");
+    addScript.setAttribute("src", "./js/messages.js");
+    document.querySelector("body").append(addScript);
+    document.getElementById("contentContainer").innerHTML = messagesHTML();
+  });
+
+  // products layout
+  const buttonTest = document.getElementById("buttonTest");
+  buttonTest.addEventListener("click", (e) => {
+    const addScript = document.createElement("script");
+    addScript.setAttribute("type", "module");
+    addScript.setAttribute("src", "./js/test.js");
+    document.querySelector("body").append(addScript);
+    document.getElementById("contentContainer").innerHTML = testHTML();
+  });
+
+  // LogOut
+  const logOutButton = document.getElementById("logOutButton");
+
+  logOutButton.addEventListener("click", (e) => {
+    window.location.reload();
+  });
+
+  return buttonProducts, buttonMessages, buttonTest, logOutButton;
 });
-
-socket.on(`products`, function () {
-  renderProductList();
-});
-
-// fetch para productos
-const formProduct = document.getElementById("formProduct");
-
-formProduct.addEventListener("submit", (e) => {
-  e.preventDefault;
-  const formData = new FormData(formProduct);
-  const newProduct = {
-    nombre: formData.get("nombre"),
-    descripcion: formData.get("descripcion"),
-    codigo: formData.get("codigo"),
-    foto: formData.get("foto"),
-    precio: formData.get("precio"),
-    stock: formData.get("stock"),
-  };
-
-  fetch(`/api/productos`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(newProduct),
-  })
-    .then((respuesta) => respuesta.json())
-    .then((productos) => {
-      formProduct.reset();
-      socket.emit(`update`, `Se agrego producto nuevo`);
-    })
-    .catch((error) => console.log(error));
-});
-
-function renderProductList() {
-  fetch(`/api/productos`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "GET",
-  })
-    .then((respuesta) => respuesta.json())
-    .then((productos) => {
-      let productList = "";
-      productos.forEach((element) => {
-        productList = productList.concat(
-          `<p><strong>${element.nombre}: </strong><em>${element.precio}</em></p>`
-        );
-      });
-      document.getElementById("productList").innerHTML = productList;
-    })
-    .catch((error) => console.log(error));
-}
-
-// socket para mensajes
-const chatForm = document.getElementById(`formChat`);
-
-chatForm.addEventListener(`submit`, (e) => {
-  e.preventDefault();
-  const formData = new FormData(chatForm);
-  const newMessage = {
-    author: {
-      id: formData.get("email"),
-      nombre: formData.get("firstName"),
-      apellido: formData.get("lastName"),
-      edad: formData.get("age"),
-      alias: formData.get("alias"),
-      avatar: formData.get("avatar"),
-    },
-    message: formData.get("message"),
-  };
-
-  fetch(`/api/mensajes`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(newMessage),
-  })
-    .then((respuesta) => respuesta.json())
-    .then((mensaje) => {
-      document.getElementById(`messageArea`).value = ``;
-      document.getElementById(`messageArea`).focus();
-      socket.emit(`new-message`, `Se agrego un nuevo mensaje`);
-    })
-    .catch((error) => console.log(error));
-});
-
-function renderTableChat() {
-  fetch(`/api/mensajes`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "GET",
-  })
-    .then((respuesta) => respuesta.json())
-    .then((mensajes) => {
-      let chatBox = "";
-      mensajes.forEach((element) => {
-        chatBox = chatBox.concat(
-          `<p><strong>${element.author.id}: </strong><em>${element.message}</em></p>`
-        );
-      });
-      document.getElementById("chatBox").innerHTML = chatBox;
-    })
-    .catch((error) => console.log(error));
-}

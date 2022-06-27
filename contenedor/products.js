@@ -5,7 +5,7 @@ import * as productsModel from "../models/products.js";
 // clase productos
 class Products {
   constructor() {
-    this.URL = "AQUI VA EL URL AL MONGO ATLAS"; //reemplazar con la URL a la DB
+    this.URL = "ACA VA LA DB ATLAS"; //reemplazar con la URL a la DB
     this.collection = productsModel;
     this.connect();
   }
@@ -28,7 +28,6 @@ class Products {
   }
 
   async saveProduct(product) {
-    console.log(product);
     try {
       const newProduct = await this.collection.products.create({
         ...product,

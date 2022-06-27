@@ -1,5 +1,5 @@
 // Librerias y componentes
-import express, { json } from "express";
+import express from "express";
 import Messages from "../contenedor/messages.js";
 
 class messagesRouter extends express.Router {

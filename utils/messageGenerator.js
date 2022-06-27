@@ -4,14 +4,14 @@ faker.locale = "es";
 function generateMessage() {
   return {
     author: {
-      id: faker.internet.email(),
+      email: faker.internet.email(),
       nombre: faker.name.firstName(),
       apellido: faker.name.lastName(),
       edad: faker.random.numeric(2),
       alias: faker.random.word(),
       avatar: faker.image.avatar(),
     },
-    text: faker.random.words(8),
+    text: faker.random.words(48),
   };
 }
 

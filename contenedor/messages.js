@@ -6,10 +6,9 @@ import util from "util";
 
 class Messages {
   constructor() {
-    this.URL = "AQUI VA EL URL A MONGO ATLAS"; //reemplazar con la URL a la DB
+    this.URL = "ACA VA LA DB ATLAS"; //reemplazar con la URL a la DB
     this.collection = messageModel;
     this.connect();
-    // this.normalize();
   }
 
   async connect() {
@@ -31,7 +30,10 @@ class Messages {
 
   async saveMessage(message) {
     try {
-      return await this.collection.messages.create(message);
+      return await this.collection.messages.create({
+        ...message,
+        timestamp: Date.now(),
+      });
     } catch (error) {
       throw new Error(`Error al guardar el documento: ${error}`);
     }
@@ -60,27 +62,37 @@ class Messages {
   }
 
   // async normalize() {
-  //   const authorSchema = new schema.Entity("author");
-
-  //   const messageSchema = new schema.Entity("message");
-
-  //   const chatEntry = new schema.Entity("chatEntrys", {
-  //     authors: authorSchema,
-  //     messages: messageSchema,
-  //   });
-
-  //   const messages = await this.collection.messages.find(
+  //   const authorSchema = new schema.Entity(
+  //     "authors",
   //     {},
-  //     { _id: 0, author: 1, message: 1 }
+  //     { idAttribute: "email" }
   //   );
 
-  //   // const messagesParsed = JSON.parse(messages);
-  //   const normalizedMessages = await normalize(messages, chatEntry);
-  //   function print(objeto) {
-  //     console.log(util.inspect(objeto, false, 12, true));
-  //   }
+  //   const messagesSchema = new schema.Entity(
+  //     "mensajes",
+  //     {
+  //       author: authorSchema,
+  //     },
+  //     { idAttribute: "_id" }
+  //   );
 
-  //   print(normalizedMessages);
+  //   const chatSchema = new schema.Entity("entradas", {
+  //     id: "entradas",
+  //     entries: [messagesSchema],
+  //   });
+  //   const messages = await this.collection.messages.find(
+  //     {},
+  //     { "author._id": 0, timestamp: 0 }
+  //   );
+  //   console.log(JSON.stringify(messages));
+  //   // const messagesParsed = JSON.parse(messages);
+  //   // const normalizedMessages = await normalize(messages, chatSchema);
+  //   // console.log(JSON.stringify(normalizedMessages.entities));
+  //   // function print(objeto) {
+  //   //   console.log(util.inspect(objeto, false, 12, true));
+  //   // }
+
+  //   // print(normalizedMessages);
   // }
 }
 
