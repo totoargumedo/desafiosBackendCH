@@ -43,7 +43,7 @@ class productsRouter extends express.Router {
 
     // agregar productos
     this.post(`/`, (req, res) => {
-      if (administrador === true) {
+      if (req.session.admin === true) {
         productos
           .saveProduct(req.body)
           .then((newProduct) => {
@@ -67,7 +67,7 @@ class productsRouter extends express.Router {
 
     // actualizar productos,  solo actualizar stock
     this.put(`/:id`, (req, res) => {
-      if (administrador) {
+      if (req.session.admin === true) {
         if (req.query.stock) {
           productos
             .modifyStock(req.params.id, req.query.stock)
@@ -106,7 +106,7 @@ class productsRouter extends express.Router {
 
     // borrar productos por id
     this.delete(`/:id`, (req, res) => {
-      if (administrador) {
+      if (req.session.admin === true) {
         productos
           .deleteById(req.params.id)
           .then((data) => {
@@ -130,7 +130,7 @@ class productsRouter extends express.Router {
 
     // mostrar productos fakeApi
     this.post(`/test`, async (req, res) => {
-      if (administrador) {
+      if (req.session.admin === true) {
         try {
           if (!req.query.quantity) {
             req.query.quantity = 5;

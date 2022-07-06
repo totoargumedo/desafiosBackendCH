@@ -24,6 +24,40 @@ server.on("error", (error) => {
 app.use(`/api/productos`, new productsRouter());
 app.use(`/api/mensajes`, new messagesRouter());
 
+// session store
+import session from "express-session";
+import sessionConfig from "./models/sessionLogin.js";
+
+app.use(session(sessionConfig));
+
+//login
+app.get("/login", (req, res) => {
+  if (!req.session.counter) {
+    req.session.counter = 1;
+    req.session.name = req.query.name;
+    req.session.admin = false;
+    res
+      .status(200)
+      .json({ name: req.session.name, counter: req.session.counter });
+  } else {
+    req.session.counter++;
+    res
+      .status(200)
+      .json({ name: req.session.name, counter: req.session.counter });
+  }
+});
+
+app.get("/login/destroy", (req, res) => {
+  const name = req.session.name;
+  req.session.destroy((err) => {
+    if (err) {
+      res.json({ error: "Olvidar sesion", description: err });
+    } else {
+      res.status(200).json({ name: name });
+    }
+  });
+});
+
 // static
 app.use(express.static("public"));
 

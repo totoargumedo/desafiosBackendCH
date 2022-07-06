@@ -1,11 +1,12 @@
 // librerias
 import mongoose from "mongoose";
 import * as productsModel from "../models/products.js";
+import dbURL from "../sensible/veryPrivate.js";
 
 // clase productos
 class Products {
   constructor() {
-    this.URL = "ACA VA LA DB ATLAS"; //reemplazar con la URL a la DB
+    this.URL = dbURL;
     this.collection = productsModel;
     this.connect();
   }

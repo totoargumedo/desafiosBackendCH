@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 import * as messageModel from "../models/messages.js";
 import { normalize, denormalize, schema } from "normalizr";
 import util from "util";
+import dbURL from "../sensible/veryPrivate.js";
 
 class Messages {
   constructor() {
-    this.URL = "ACA VA LA DB ATLAS"; //reemplazar con la URL a la DB
+    this.URL = dbURL;
     this.collection = messageModel;
     this.connect();
   }

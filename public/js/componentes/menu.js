@@ -1,5 +1,5 @@
-export function menusHTML() {
-  let menuLayout = `<nav class="navbar navbar-expand-lg bg-light">
+export function menusHTML(data) {
+  let menuLayout = `<nav class="navbar navbar-expand-lg bg-light" id="contentData">
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="index.html">
@@ -24,14 +24,14 @@ export function menusHTML() {
       </ul>
     </nav>
     <div class="container">
-        <h2>Bienvenido: </h2>
-        <p>El sitio se encuentra en construcción, usa la barra de navegación</p>
-    </div>
-    <div class="container" id="contentContainer"><img src="./js/assets/workInProgress.svg" class="img-fluid" alt="Sitio en construcción"></div>
-    <div class="container">
+        <h2>Bienvenido: ${data.name}</h2>
+         <p>Visitas ${data.counter}</p>
         <button type="button" class="btn btn-light" id="logOutButton">
           Log Out
         </button>
-      </div>`;
+        <p>El sitio se encuentra en construcción, usa la barra de navegación</p>
+    </div>
+    <div class="container" id="contentContainer"><img src="./js/assets/workInProgress.svg" class="img-fluid" alt="Sitio en construcción"></div>
+   `;
   return menuLayout;
 }

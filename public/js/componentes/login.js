@@ -3,9 +3,17 @@ export function loginHTML() {
       <div class="container" id="loginScreen">
         <h2>Bienvenido</h2>
         <p>Ingresa tu usuario para acceder</p>
-        <button type="button" class="btn btn-light" id="loginButton">
-          Log In
-        </button>
+        <form id="formLogin">
+          <!-- Datos -->
+          <fieldset>
+            <label>User: <input type="text" name="name" required /></label>
+            <label
+              >Password: <input type="password" name="password" required
+            /></label>
+          </fieldset>
+
+          <input class="btn btn-light" type="submit" value="Log In" id="loginButton"/>
+        </form>
       </div>`;
   return loginLayout;
 }
